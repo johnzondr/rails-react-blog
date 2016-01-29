@@ -2,7 +2,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CreateArticleContainer = require('./components/CreateArticleContainer.jsx');
 var BasePage = require('./components/BasePage.jsx');
-var Routes = require('./Routes.jsx');
 
 
 var ReactRouter = require('react-router');
@@ -23,6 +22,7 @@ ReactDOM.render((
     <Route path="/" component={BasePage}>
     	<IndexRoute component={HomePage} />
     	<Route path="/articles/:articleId" component={ShowArticlePage} />
+    	<Route path="/new" component={CreateArticlePage} />
     </Route>
   </Router>
 ), document.getElementById('app'));

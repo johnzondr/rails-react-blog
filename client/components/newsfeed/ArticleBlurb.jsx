@@ -8,9 +8,9 @@ var ArticleBlurb = React.createClass({
 		return (
 			<div>
 				<h1><Link to={url}> a new article </Link></h1>
-				{this.props.title}
-				{this.props.author}
-				{this.props.content}
+				<h3> {this.props.title} </h3>
+				<h4> {this.props.author} </h4>
+				{this.props.content} 
 			</div>
 		);
 	}

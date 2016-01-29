@@ -37,11 +37,19 @@ var ArticleForm = React.createClass({
 
 	},
     render: function() {
+
+
         return (
             <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Enter a title" onChange={this.onTitleChange} value={this.state.title}/>
-                <input type="text" placeholder="Your name" onChange={this.onAuthorChange} value={this.state.author}/>
-                <input type="text" onChange={this.onContentChange} value={this.state.content}/>
+            	<div> 
+            		<input type="text" placeholder="Enter a title" onChange={this.onTitleChange} value={this.state.title}/>
+            	</div>
+         		<div>
+                	<input type="text" placeholder="Your name" onChange={this.onAuthorChange} value={this.state.author}/>
+                </div>
+                <div>
+                	<input type="text"  placeholder="Your thoughts here" onChange={this.onContentChange} value={this.state.content}/>
+                </div>
                 <input type="submit" value="Post" />
             </form>
         );

@@ -61,39 +61,30 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 159);
 	var CreateArticleContainer = __webpack_require__(/*! ./components/CreateArticleContainer.jsx */ 160);
 	var BasePage = __webpack_require__(/*! ./components/BasePage.jsx */ 162);
-	var Routes = __webpack_require__(/*! ./Routes.jsx */ 163);
 	
 	
 	var ReactRouter = __webpack_require__(/*! react-router */ 164);
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
+	var IndexRoute = ReactRouter.IndexRoute;
+	
+	var BasePage = __webpack_require__(/*! ./components/BasePage.jsx */ 162);
+	var HomePage = __webpack_require__(/*! ./components/HomePage.jsx */ 211);
+	var ShowArticlePage = __webpack_require__(/*! ./components/ShowArticlePage.jsx */ 214);
+	var CreateArticlePage = __webpack_require__(/*! ./components/CreateArticlePage.jsx */ 219);
 	
 	
-	// module.exports = React.createClass({
-	//   render: function () {
-	//     return (
-	//       <h1>Hello world!</h1>
-	//     );
-	//   }
-	// });
-	
-	var Hi = React.createClass({displayName: "Hi",
-		render: function() {
-			return (
-				React.createElement("h1", null, " Hello World! ")	
-			)
-		}
-	});
-	
-	module.exports = Hi;
 	
 	
 	ReactDOM.render((
 	  React.createElement(Router, null, 
-	    React.createElement(Route, {path: "/", component: BasePage}
+	    React.createElement(Route, {path: "/", component: BasePage}, 
+	    	React.createElement(IndexRoute, {component: HomePage}), 
+	    	React.createElement(Route, {path: "/articles/:articleId", component: ShowArticlePage}), 
+	    	React.createElement(Route, {path: "/new", component: CreateArticlePage})
 	    )
 	  )
-	), document.body);
+	), document.getElementById('app'));
 	
 	// ReactDOM.render(<Routes />, document.getElementById('app'));
 	// ReactDOM.render(<CreateArticleContainer />, document.getElementById('app'));
@@ -20187,7 +20178,6 @@
 	    render: function() {
 	        return (
 	            React.createElement("div", {className: ""}, 
-	                React.createElement("h1", null, "Create a New Blog"), 
 	                React.createElement(ArticleForm, null)
 	            )
 	        );
@@ -20243,11 +20233,19 @@
 	
 		},
 	    render: function() {
+	
+	
 	        return (
 	            React.createElement("form", {className: "commentForm", onSubmit: this.handleSubmit}, 
-	                React.createElement("input", {type: "text", placeholder: "Enter a title", onChange: this.onTitleChange, value: this.state.title}), 
-	                React.createElement("input", {type: "text", placeholder: "Your name", onChange: this.onAuthorChange, value: this.state.author}), 
-	                React.createElement("input", {type: "text", onChange: this.onContentChange, value: this.state.content}), 
+	            	React.createElement("div", null, 
+	            		React.createElement("input", {type: "text", placeholder: "Enter a title", onChange: this.onTitleChange, value: this.state.title})
+	            	), 
+	         		React.createElement("div", null, 
+	                	React.createElement("input", {type: "text", placeholder: "Your name", onChange: this.onAuthorChange, value: this.state.author})
+	                ), 
+	                React.createElement("div", null, 
+	                	React.createElement("input", {type: "text", placeholder: "Your thoughts here", onChange: this.onContentChange, value: this.state.content})
+	                ), 
 	                React.createElement("input", {type: "submit", value: "Post"})
 	            )
 	        );
@@ -20264,12 +20262,18 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(/*! react */ 2);
+	var NavBar = __webpack_require__(/*! ./NavBar.jsx */ 163);
+	
+	var Router = __webpack_require__(/*! react-router */ 164);
+	var Link = Router.Link;
 	
 	var BasePage = React.createClass({displayName: "BasePage",
 		render: function() {
 			return (
-				// {this.props.children}
-				React.createElement("h1", null, "Hello")
+				React.createElement("div", null, 
+					React.createElement(NavBar, null), 
+					this.props.children
+				)
 			);
 	
 		}
@@ -20280,32 +20284,29 @@
 
 /***/ },
 /* 163 */
-/*!***************************!*\
-  !*** ./client/Routes.jsx ***!
-  \***************************/
+/*!**************************************!*\
+  !*** ./client/components/NavBar.jsx ***!
+  \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(/*! react */ 2);
-	var ReactRouter = __webpack_require__(/*! react-router */ 164);
-	var Router = ReactRouter.Router;
-	var Route = ReactRouter.Route;
-	// var IndexRoute = ReactRouter.IndexRoute;
-				// <IndexRoute component={HomePage} />
-				// <Route path="/article/:articleId" component={ShowArticlePage} />
+	var Router = __webpack_require__(/*! react-router */ 164);
+	var Link = Router.Link;
 	
-	var BasePage = __webpack_require__(/*! ./components/BasePage.jsx */ 162);
-	var HomePage = __webpack_require__(/*! ./components/HomePage.jsx */ 211);
-	var ShowArticlePage = __webpack_require__(/*! ./components/ShowArticlePage.jsx */ 212);
-	var CreateArticlePage = __webpack_require__(/*! ./components/CreateArticlePage.jsx */ 213);
+	var NavBar = React.createClass({displayName: "NavBar",
+		render: function() {
+			return (
+				React.createElement("div", null, 
+					React.createElement(Link, {to: "/"}, React.createElement("h2", null, "Home")), 
+					React.createElement(Link, {to: "/new"}, React.createElement("h2", null, "Contribute a Post"))
+				)
+			);
+		}
+	});
 	
-	var Routes = (
-		React.createElement(Router, null, 
-			React.createElement(Route, {path: "/", component: BasePage}
-			)
-		)
-	);
+	module.exports = NavBar;
 	
-	module.exports = Routes;
+
 
 /***/ },
 /* 164 */
@@ -24790,14 +24791,35 @@
 
 	var React = __webpack_require__(/*! react */ 2);
 	var ReactRouter = __webpack_require__(/*! react-router */ 164);
-	var Link = ReactRouter.Link;
+	var NewsFeedContainer = __webpack_require__(/*! ./newsfeed/NewsFeedContainer.jsx */ 212);
+	
+	// var articles = [
+	//   {id: 1, author: "Pete Hunt", content: "This is one comment", title:"a title"},
+	//   {id: 2, author: "Jordan Walke", content: "This is *another* comment", title: "a title"}
+	// ];
 	
 	var HomePage = React.createClass({displayName: "HomePage",
+		getInitialState: function(){
+			return {articles:[]};
+		},
+		  componentDidMount: function() {
+		    $.ajax({
+		      url: '/articles',
+		      dataType: 'json',
+		      cache: false,
+		      success: function(data) {
+		        this.setState({articles: data});
+		      }.bind(this),
+		      error: function(xhr, status, err) {
+		        console.error(this.props.url, status, err.toString());
+		      }.bind(this)
+		    });
+		  },
 		render: function() {
 			return (
 				React.createElement("div", null, 
-					React.createElement("h1", null, "Home Page")
-	
+					React.createElement("h1", null, "Welcome to my Rails React blog"), 
+					React.createElement(NewsFeedContainer, {articles: this.state.articles})
 				)
 			);
 	
@@ -24809,12 +24831,78 @@
 
 /***/ },
 /* 212 */
+/*!**********************************************************!*\
+  !*** ./client/components/newsfeed/NewsFeedContainer.jsx ***!
+  \**********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	var ArticleBlurb = __webpack_require__(/*! ./ArticleBlurb.jsx */ 213);
+	
+	// var List = require('./List.jsx');
+	
+	var NewsFeedContainer = React.createClass({displayName: "NewsFeedContainer",
+	    render: function() {
+	    	var createBlurb = function(articleItem, index) {
+	    		return React.createElement(ArticleBlurb, {key: articleItem.author+index, articleId: articleItem.id, title: articleItem.title, author: articleItem.author, content: articleItem.content});
+	    	}
+	        return (
+	            React.createElement("div", null, 
+	                React.createElement("h3", null, "recent articles"), 
+	                React.createElement("ul", null, this.props.articles.map(createBlurb))
+	
+	            )
+	        );
+	    }
+	});
+	
+	
+	
+	module.exports = NewsFeedContainer;
+
+
+/***/ },
+/* 213 */
+/*!*****************************************************!*\
+  !*** ./client/components/newsfeed/ArticleBlurb.jsx ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	var ReactRouter = __webpack_require__(/*! react-router */ 164);
+	var Link = ReactRouter.Link;
+	
+	var ArticleBlurb = React.createClass({displayName: "ArticleBlurb",
+		render: function() {
+			var url = "/articles/"+this.props.articleId;
+			return (
+				React.createElement("div", null, 
+					React.createElement("h1", null, React.createElement(Link, {to: url}, " a new article ")), 
+					React.createElement("h3", null, " ", this.props.title, " "), 
+					React.createElement("h4", null, " ", this.props.author, " "), 
+					this.props.content
+				)
+			);
+		}
+	});
+	
+	module.exports=ArticleBlurb;
+
+
+/***/ },
+/* 214 */
 /*!***********************************************!*\
   !*** ./client/components/ShowArticlePage.jsx ***!
   \***********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(/*! react */ 2);
+	var CommentBox = __webpack_require__(/*! ./comments/CommentBox.jsx */ 215);
+	
+	var comments = [
+	  {"author": "Pete Hunt", "text": "This is one comment"},
+	  {"author": "Jordan Walke", "text": "This is *another* comment"}
+	];
 	
 	var ShowArticlePage = React.createClass({displayName: "ShowArticlePage",
 		getInitialState: function() {
@@ -24825,7 +24913,11 @@
 		},
 		render: function() {
 			return (
-				React.createElement("h1", null, " i am article id page ", this.state.articleId, " ")
+				React.createElement("div", null, 
+					React.createElement("h1", null, " i am article id page ", this.state.articleId, " "), 
+					React.createElement(CommentBox, {data: comments})
+				)
+	
 			);
 	
 		}
@@ -24835,18 +24927,122 @@
 	module.exports = ShowArticlePage;
 
 /***/ },
-/* 213 */
+/* 215 */
+/*!***************************************************!*\
+  !*** ./client/components/comments/CommentBox.jsx ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	var CommentList = __webpack_require__(/*! ./CommentList.jsx */ 216);
+	var CommentForm = __webpack_require__(/*! ./CommentForm.jsx */ 218);
+	
+	var CommentBox = React.createClass({displayName: "CommentBox",
+	    render: function() {
+	        return (
+	            React.createElement("div", {className: "commentBox"}, 
+	                React.createElement("h1", null, "Comments"), 
+	                React.createElement(CommentList, {data: this.props.data}), 
+	                React.createElement(CommentForm, null)
+	            )
+	        );
+	    }
+	});
+	
+	
+	module.exports = CommentBox;
+
+/***/ },
+/* 216 */
+/*!****************************************************!*\
+  !*** ./client/components/comments/CommentList.jsx ***!
+  \****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	var Comment = __webpack_require__(/*! ./Comment.jsx */ 217);
+	
+	var CommentList = React.createClass({displayName: "CommentList",
+	    render: function() {
+	        var createComment = function(comment) {
+	            return (
+	                React.createElement(Comment, {author: comment.author, key: comment.id}, 
+	                    comment.text
+	                )
+	            );
+	        };
+	        
+	        return (
+	            React.createElement("div", {className: "commentList"}, 
+	                 this.props.data.map(createComment) 
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CommentList
+
+/***/ },
+/* 217 */
+/*!************************************************!*\
+  !*** ./client/components/comments/Comment.jsx ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	var Comment = React.createClass({displayName: "Comment",
+	    render: function() {
+	        return (
+	            React.createElement("div", {className: "comment"}, 
+	                React.createElement("h2", {className: "commentAuthor"}, 
+	                    this.props.author
+	                ), 
+	                    this.props.children
+	            )
+	        );
+	    }
+	});
+	
+	module.exports=Comment;
+
+/***/ },
+/* 218 */
+/*!****************************************************!*\
+  !*** ./client/components/comments/CommentForm.jsx ***!
+  \****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(/*! react */ 2);
+	
+	var CommentForm = React.createClass({displayName: "CommentForm",
+	    render: function() {
+	        return (
+	            React.createElement("div", {className: "commentForm"}, 
+	                "comment form"
+	            )
+	        );
+	    }
+	});
+	
+	module.exports = CommentForm;
+
+/***/ },
+/* 219 */
 /*!*************************************************!*\
   !*** ./client/components/CreateArticlePage.jsx ***!
   \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(/*! react */ 2);
+	var CreateArticleContainer = __webpack_require__(/*! ./CreateArticleContainer.jsx */ 160);
 	
 	var CreateArticlePage = React.createClass({displayName: "CreateArticlePage",
 		render: function() {
 			return (
-				React.createElement("h1", null, "CreateArticlePage")
+				React.createElement("div", null, 
+				React.createElement("h1", null, "Create Article Page"), 
+					React.createElement(CreateArticleContainer, null)
+				)
 			);
 	
 		}

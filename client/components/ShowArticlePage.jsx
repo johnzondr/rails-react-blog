@@ -1,4 +1,10 @@
 var React = require('react');
+var CommentBox = require('./comments/CommentBox.jsx');
+
+var comments = [
+  {"author": "Pete Hunt", "text": "This is one comment"},
+  {"author": "Jordan Walke", "text": "This is *another* comment"}
+];
 
 var ShowArticlePage = React.createClass({
 	getInitialState: function() {
@@ -9,7 +15,11 @@ var ShowArticlePage = React.createClass({
 	},
 	render: function() {
 		return (
-			<h1> i am article id page {this.state.articleId} </h1>
+			<div>
+				<h1> i am article id page {this.state.articleId} </h1>
+				<CommentBox data={comments} />
+			</div>
+
 		);
 
 	}

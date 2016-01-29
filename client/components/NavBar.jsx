@@ -1,20 +1,17 @@
 var React = require('react');
-var NavBar = require('./NavBar.jsx');
-
 var Router = require('react-router');
 var Link = Router.Link;
 
-var BasePage = React.createClass({
+var NavBar = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<NavBar />
-				{this.props.children}
+				<Link to="/"><h2>Home</h2></Link>
+				<Link to="/new"><h2>Contribute a Post</h2></Link>
 			</div>
 		);
-
 	}
 });
 
+module.exports = NavBar;
 
-module.exports = BasePage;

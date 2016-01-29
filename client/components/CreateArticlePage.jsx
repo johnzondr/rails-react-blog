@@ -1,9 +1,13 @@
 var React = require('react');
+var CreateArticleContainer = require('./CreateArticleContainer.jsx');
 
 var CreateArticlePage = React.createClass({
 	render: function() {
 		return (
-			<h1>CreateArticlePage</h1>
+			<div>
+			<h1>Create Article Page</h1>
+				<CreateArticleContainer />
+			</div>
 		);
 
 	}
