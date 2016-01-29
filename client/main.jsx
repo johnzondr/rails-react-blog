@@ -1,22 +1,31 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var CreateArticleContainer = require('./components/CreateArticleContainer.jsx');
+var BasePage = require('./components/BasePage.jsx');
+var Routes = require('./Routes.jsx');
 
-// module.exports = React.createClass({
-//   render: function () {
-//     return (
-//       <h1>Hello world!</h1>
-//     );
-//   }
-// });
 
-var Hi = React.createClass({
-	render: function() {
-		return (
-			<h1> Hello World! </h1>	
-		)
-	}
-});
+var ReactRouter = require('react-router');
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var IndexRoute = ReactRouter.IndexRoute;
 
-module.exports = Hi;
+var BasePage = require('./components/BasePage.jsx');
+var HomePage = require('./components/HomePage.jsx');
+var ShowArticlePage = require('./components/ShowArticlePage.jsx');
+var CreateArticlePage = require('./components/CreateArticlePage.jsx');
 
-ReactDOM.render(<Hi />, document.getElementById('app'));
+
+
+
+ReactDOM.render((
+  <Router>
+    <Route path="/" component={BasePage}>
+    	<IndexRoute component={HomePage} />
+    	<Route path="/articles/:articleId" component={ShowArticlePage} />
+    </Route>
+  </Router>
+), document.getElementById('app'));
+
+// ReactDOM.render(<Routes />, document.getElementById('app'));
+// ReactDOM.render(<CreateArticleContainer />, document.getElementById('app'));

@@ -4,4 +4,21 @@ class ArticlesController < ApplicationController
     @articles = Article.all.order(created_at: :desc)
     render json: @articles
   end
+
+  def create
+  	@article = Article.create(article_params)
+  	render json: @article
+  end
+
+
+  private
+
+  def article_params
+  	{
+  		title: params[:title], 
+  		author: params[:author],
+  		content: params[:content]
+  	}
+  end
+
 end
